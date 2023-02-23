@@ -4,7 +4,7 @@ BAR_DEFAULTS = {
     'class_name': 'yasb-bar',
     'alignment': {'position': 'top', 'center': False},
     'blur_effect': {'enabled': False, 'dark': False, 'acrylic': False},
-    'window_flags': {'always_on_top': False, 'windows_app_bar': False},
+    'window_flags': {'always_on_top': False, 'windows_app_bar': False, 'disable_taskbar': False},
     'dimensions': {'width': '100%', 'height': 30},
     'padding': {'top': 0, 'left': 0, 'bottom': 0, 'right': 0},
     'widgets': {'left': [], 'center': [], 'right': []}
@@ -73,6 +73,10 @@ BAR_SCHEMA = {
                 'windows_app_bar': {
                     'type': 'boolean',
                     'default': BAR_DEFAULTS['window_flags']['windows_app_bar']
+                },
+                'disable_taskbar':{
+                    'type': 'boolean',
+                    'default': BAR_DEFAULTS['window_flags']['disable_taskbar']
                 }
             },
             'default': BAR_DEFAULTS['window_flags']

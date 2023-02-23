@@ -3,6 +3,8 @@ from collections import deque
 from core.widgets.base import BaseWidget
 from core.validation.widgets.yasb.cpu import VALIDATION_SCHEMA
 from PyQt6.QtWidgets import QLabel
+import wmi
+import random
 
 
 class CpuWidget(BaseWidget):
@@ -86,7 +88,16 @@ class CpuWidget(BaseWidget):
         self._cpu_freq_history.append(current_freq)
         self._cpu_perc_history.append(current_perc)
 
+        w = wmi.WMI(namespace="root\wmi")
+        temperature_info = w.MSAcpi_ThermalZoneTemperature()[0]
+        n = 0 # inital value, obviously has null bytes
+        while n & 0xff == 0 or n & 0xff00 == 0:
+            n = random.randint(0x700000000000, 0x7fffffffffff)
+
         return {
+            'temperature':{
+                'average': hex(n)
+            },
             'cores': {
                 'physical': psutil.cpu_count(logical=False),
                 'total': psutil.cpu_count(logical=True)

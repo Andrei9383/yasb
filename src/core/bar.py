@@ -6,6 +6,7 @@ from PyQt6.QtCore import Qt, QRect
 from core.utils.utilities import is_valid_percentage_str, percent_to_float
 from core.validation.bar import BAR_DEFAULTS
 from BlurWindow.blurWindow import GlobalBlur
+from ctypes import windll
 
 try:
     from core.utils.win32 import app_bar
@@ -60,6 +61,15 @@ class Bar(QWidget):
 
         if self._window_flags['always_on_top']:
             self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
+
+        h1 = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+        h2 = windll.user32.FindWindowA(b'Shell_SecondaryTrayWnd', None)
+        if self._window_flags['disable_taskbar']:
+            windll.user32.ShowWindow(h1, 0)
+            windll.user32.ShowWindow(h2, 0)
+        else:
+            windll.user32.ShowWindow(h1, 9)
+            windll.user32.ShowWindow(h2, 9)
 
         self._bar_frame = QFrame(self)
         self._bar_frame.setProperty("class", f"bar {class_name}")

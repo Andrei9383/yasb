@@ -2,12 +2,12 @@ import logging
 import psutil
 from humanize import naturalsize
 from core.widgets.base import BaseWidget
-from core.validation.widgets.yasb.memory import VALIDATION_SCHEMA
+from core.validation.widgets.yasb.desktop import VALIDATION_SCHEMA
 from PyQt6.QtWidgets import QLabel
 from pyvda import AppView, get_apps_by_z_order, VirtualDesktop, get_virtual_desktops
  
 
-class MemoryWidget(BaseWidget):
+class DesktopWidget(BaseWidget):
     validation_schema = VALIDATION_SCHEMA
 
     def __init__(
@@ -18,7 +18,7 @@ class MemoryWidget(BaseWidget):
             callbacks: dict[str, str],
             memory_thresholds: dict[str, int]
     ):
-        super().__init__(update_interval, class_name="memory-widget")
+        super().__init__(update_interval, class_name="desktop-widget")
         self._memory_thresholds = memory_thresholds
 
         self._show_alt_label = False
@@ -62,22 +62,10 @@ class MemoryWidget(BaseWidget):
         active_label_formatted = active_label_content
 
         try:
-            virtual_mem = psutil.virtual_memory()
-            swap_mem = psutil.swap_memory()
             current_desktop = VirtualDesktop.current()
             
-            threshold = self._get_virtual_memory_threshold(virtual_mem.percent)
             label_options = [
-                ("{virtual_mem_free}", naturalsize(virtual_mem.free - (swap_mem.free))),
-                ("{virtual_mem_percent}", virtual_mem.percent),
-                ("{virtual_mem_total}", naturalsize(virtual_mem.total)),
-                ("{virtual_mem_avail}", naturalsize(virtual_mem.available)),
-                ("{virtual_mem_used}", naturalsize(virtual_mem.total - virtual_mem.free)),
-                ("{swap_mem_free}", naturalsize(swap_mem.free)),
-                ("{swap_mem_percent}", swap_mem.percent),
-                ("{swap_mem_total}", naturalsize(swap_mem.total)),
                 ("{current_desktop}", current_desktop.number),
-
             ]
 
             for fmt_str, value in label_options:
@@ -85,7 +73,6 @@ class MemoryWidget(BaseWidget):
 
             alt_class = "alt" if self._show_alt_label else ""
             active_label.setText(active_label_formatted)
-            active_label.setProperty("class", f"label {alt_class} status-{threshold}")
             active_label.setStyleSheet('')
         except Exception:
             active_label.setText(active_label_content)
