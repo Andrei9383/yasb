@@ -381,7 +381,7 @@ widgets:
     options:
         label: "{%y-%m-%d %H:%M:%S}"
         label_alt: "{%y-%m-%d %H:%M:%S}"
-        timezones: ["Europe/London", "America/New_York"]
+        timezones: ["Europe/Bucharest", "Europe/Bucharest"]
         callbacks:
           on_middle: "exec explorer.exe shell:Appsfolder\\Microsoft.WindowsAlarms_8wekyb3d8bbwe!App"
           on_right: "next_timezone"
