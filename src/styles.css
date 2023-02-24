@@ -9,8 +9,14 @@
 .bar {
   background: rgba(0, 0, 0, 255);
 }
-.custom-widget.ip-info-widget {
-  color: red;
+.custom-widget ip-info-widget {
+  color: #ff0000;
+}
+.custom-widget *{
+  color: #ff0000;
+}
+.ethernet-widget *{
+  color: #00f800;
 }
 .desktop-widget{
   background-color: #285577;

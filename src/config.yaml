@@ -97,7 +97,7 @@ bars:
     widgets:
       left:   ["desktop"]
       center: []
-      right:  [ "ip_info", "cpu", "memory", "clock"]
+      right:  ["ipv6", "active_window", "ip_info", "active_window", "ethernet", "cpu", "memory", "clock"]
 
 # widgets:
   # my-clock-widget:
@@ -364,12 +364,21 @@ widgets:
   active_window:
     type: "yasb.active_window.ActiveWindowWidget"
     options:
-      label: "{win[title]}"
-      label_alt: "[class_name='{win[class_name]}' exe='{win[process][name]}' hwnd={win[hwnd]}]"
+      label: "|"
+      label_alt: "|"
       label_no_window: ""
       max_length: 48
       max_length_ellipsis: "..."
       monitor_exclusive: false
+  #active_window:
+   # type: "yasb.active_window.ActiveWindowWidget"
+    #options:
+     # label: "{win[title]}"
+      #label_alt: "[class_name='{win[class_name]}' exe='{win[process][name]}' hwnd={win[hwnd]}]"
+      #label_no_window: ""
+      #max_length: 48
+      #max_length_ellipsis: "..."
+      #monitor_exclusive: false
 
   battery:
     type: "yasb.battery.BatteryWidget"
@@ -403,6 +412,13 @@ widgets:
         - '\u2587' # 70%
         - '\u2588' # 80%+
       histogram_num_columns: 10
+
+  ethernet:
+    type: "yasb.ethernet.EthernetWidget"
+    options:
+        label: "E: {ip} (D: {download} U: {upload})"
+        update_interval: 1000
+
 
   desktop:
     type: "yasb.desktop.DesktopWidget"
@@ -463,11 +479,18 @@ widgets:
         on_left: "exec explorer.exe"
         on_right: "toggle_label"
 
+  ipv6:
+    type: "yasb.custom.CustomWidget"
+    options:
+      label: "no IPv6"
+      label_alt: "no IPv6"
+      class_name: "ipv6-widget"
+    
   ip_info:
     type: "yasb.custom.CustomWidget"
     options:
-      label: "\ no IPv6 | {data[timezone]}"
-      label_alt: "\ no IPv6 | {data[country]}"
+      label: "{data[timezone]}"
+      label_alt: "{data[country]}"
       class_name: "ip-info-widget"
       exec_options:
         run_cmd: "curl.exe https://ipinfo.io"
